@@ -1,0 +1,31 @@
+{
+  "name": "alamid-class",
+  "version": "0.0.1",
+  "description": "Easy prototype inheritance for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha -R spec"
+  },
+  "keywords": [
+    "class",
+    "classical",
+    "oop",
+    "object-oriented",
+    "inheritance",
+    "inherit",
+    "extend",
+    "prototype",
+    "mixin"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "1.x",
+    "expect.js": "0.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peerigon/alamid-class.git"
+  },
+  "author": "peerigon <developers@peerigon.com>",
+  "license": "MIT"
+}
