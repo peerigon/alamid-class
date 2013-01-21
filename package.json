@@ -2,7 +2,7 @@
   "name": "alamid-class",
   "version": "0.0.1",
   "description": "Easy prototype inheritance for JavaScript",
-  "main": "./lib/index.js",
+  "main": "./lib/Class.js",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha -R spec"
   },
@@ -20,7 +20,8 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "1.x",
-    "expect.js": "0.x"
+    "expect.js": "0.x",
+    "cli-color": "0.x"
   },
   "repository": {
     "type": "git",

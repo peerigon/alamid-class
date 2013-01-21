@@ -9,42 +9,26 @@ describe("Class", function () {
     describe("class names", function () {
         it("should return a function named 'AnonymousClass' when passing no class name", function () {
             var MyClass = new Class({});
-
             expect(MyClass).to.be.a(Function);
             if (fnNameSupport) {
                 expect(MyClass.name).to.be("AnonymousClass");
             }
         });
         it("should return a function named 'MyClass' when passing 'MyClass' as class name (in dev mode)", function () {
-            var MyClass = new Class("MyClass", {});
+            var MyClass;
 
+            Class.dev = true;
+            MyClass = new Class("MyClass", {});
             expect(MyClass).to.be.a(Function);
             if (fnNameSupport) {
                 expect(MyClass.name).to.be("MyClass");
             }
+            Class.dev = false;
         });
-        it("should return a function named 'MyClass' when passing a path like '/path/to/some/file/MyClass.class.js' as class name (in dev mode)", function () {
-            var MyClass = new Class("/path/to/some/file/MyClass.class.js", {});
-
-            expect(MyClass).to.be.a(Function);
+        it("should return a function named 'AnonymousClass' in any case when not in dev mode", function () {
             if (fnNameSupport) {
-                expect(MyClass.name).to.be("MyClass");
-            }
-        });
-        it("should return a function named 'MyClass' when passing a path like '\\path\\to\\some\\file\\MyClass.class.js' as class name (in dev mode)", function () {
-            var MyClass = new Class("\\path\\to\\some\\file\\MyClass.class.js", {});
-
-            expect(MyClass).to.be.a(Function);
-            if (fnNameSupport) {
-                expect(MyClass.name).to.be("MyClass");
-            }
-        });
-        it("should return a function named 'Constructor' in any case when not in dev mode", function () {
-            if (fnNameSupport) {
-                Class.dev = false;
                 expect(new Class("MyClass", {}).name).to.be("AnonymousClass");
                 expect(new Class("/path/to/some/file/MyClass.class.js", {}).name).to.be("AnonymousClass");
-                Class.dev = true;
             }
         });
     });

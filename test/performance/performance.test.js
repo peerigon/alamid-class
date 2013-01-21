@@ -1,7 +1,6 @@
 "use strict"; // run code in ES5 strict mode
 
-var path = require("path"),
-    fs = require("fs"),
+var fs = require("fs"),
     util = require("util"),
     clc = require("cli-color"),
     Class = require("../../");
@@ -9,7 +8,7 @@ var path = require("path"),
 var outputDir = __dirname + "/results",
     now = new Date(),
     title = process.argv[2],
-    numOfIterations = 10000,
+    numOfIterations = 30000,
     outputFile = outputDir + "/" +
         title + " " + numOfIterations +
         ".json",
@@ -20,68 +19,76 @@ var outputDir = __dirname + "/results",
             numOfIterations: numOfIterations,
             unit: "nanoseconds"
         },
-        tests: {
-            nodeclass: {},
-            classic: {},
-            classicBinding: {}
-        }
-    },
-    examplePath = path.resolve(__dirname, "../../examples/OctoCat.class.js");
+        tests: {}
+    };
 
-var operations = {
-    compilation: function compilation(path) {
-        delete require.cache[path];
-        require(path);
-    },
-    instantiation: function instantiation(Class) {
-        new Class();
-    },
-    execution: function execution(instance) {
-        instance.strollAround();
-    }
-};
+function stopTimer(timer) {
+    timer = process.hrtime(timer);
+    return timer[0] * Math.pow(10, 9) + timer[1];
+}
 
-function perform(action, arg) {
-    var start,
-        duration,
+function perform(name, compiler) {
+    var duration,
+        Class,
+        instance,
+        compilation = 0,
+        instantiation = 0,
+        execution = 0,
         i,
         progress = 0,
         previousProgress = 0;
 
-    process.stdout.write(clc.blackBright(action.name + clc.move(20 - action.name.length, 0) + " ["));
+    console.log(name);
 
-    start = process.hrtime();
     for (i = 0; i < numOfIterations; i++) {
-        action(arg);
+        duration = process.hrtime();
+        Class = compiler();
+        compilation += stopTimer(duration);
+
+        duration = process.hrtime();
+        instance = new Class();
+        instantiation += stopTimer(duration);
+
+        duration = process.hrtime();
+        instance.strollAround();
+        execution += stopTimer(duration);
+
         progress = Math.floor((i / numOfIterations) * 50);
         if (progress !== previousProgress) {
             process.stdout.write(clc.blackBright("="));
         }
         previousProgress = progress;
     }
-    duration = process.hrtime(start);
-    duration = duration[0] * Math.pow(10, 9) + duration[1];
 
-    process.stdout.write(clc.blackBright("] ") +
-        clc.greenBright(Math.floor(duration/numOfIterations) + " ns/op") + "\n");
+    compilation = Math.floor(compilation / numOfIterations);
+    instantiation = Math.floor(instantiation / numOfIterations);
+    execution = Math.floor(execution / numOfIterations);
 
-    return duration;
+    process.stdout.write("\n");
+    process.stdout.write("compilation       " + clc.greenBright(compilation + " " + result.setup.unit + "/op\n"));
+    process.stdout.write("instantiation     " + clc.greenBright(instantiation + " " + result.setup.unit + "/op\n"));
+    process.stdout.write("execution         " + clc.greenBright(execution + " " + result.setup.unit + "/op\n"));
+    process.stdout.write("\n");
+
+    return {
+        compilation: compilation,
+        instantiation: instantiation,
+        execution: execution
+    };
 }
-
-Class.dev = false;
 
 // PRINT SETUP
 console.log("\nTest: ", title);
-console.log("Number of iterations: " + numOfIterations);
-console.log("\n" + clc.blackBright("-------------------------------------------------------------------------------"));
+console.log("Number of iterations: " + numOfIterations + "\n");
 
-// NODECLASS
-result.tests.nodeclass.compilation = perform(operations.compilation, examplePath);
-Class = require(examplePath);
-result.tests.nodeclass.instantiation = perform(operations.instantiation, Class);
-result.tests.nodeclass.execution = perform(operations.execution, new Class());
+// ALAMID-CLASS
+result.tests.alamidClass = perform("alamid-class", require("./tests/alamid-class"));
 
-console.log("\n" + clc.blackBright("-------------------------------------------------------------------------------"));
+// ALAMID-CLASS (DEV)
+result.tests.alamidClass = perform("alamid-class (dev)", require("./tests/alamid-class-dev"));
+
+// CLASSIC
+result.tests.alamidClass = perform("classic", require("./tests/classic"));
 
 if (!title) {
     return; // no output without title

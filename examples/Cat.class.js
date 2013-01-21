@@ -11,8 +11,5 @@ module.exports = new Class("Cat", {
     },
     strollAround: function () {
 
-    },
-    bla: function () {
-
     }
 });
