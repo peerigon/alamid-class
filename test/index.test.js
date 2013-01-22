@@ -5,10 +5,16 @@ var expect = require("expect.js"),
 
 var fnNameSupport = typeof Function.prototype.name === "string";
 
+function checkFor(Error) {
+    return function (e) {
+        expect(e).to.be.an(Error);
+    };
+}
+
 describe("Class", function () {
     describe("class names", function () {
         it("should return a function named 'AnonymousClass' when passing no class name", function () {
-            var MyClass = new Class({});
+            var MyClass = new Class();
             expect(MyClass).to.be.a(Function);
             if (fnNameSupport) {
                 expect(MyClass.name).to.be("AnonymousClass");
@@ -18,7 +24,7 @@ describe("Class", function () {
             var MyClass;
 
             Class.dev = true;
-            MyClass = new Class("MyClass", {});
+            MyClass = new Class("MyClass");
             expect(MyClass).to.be.a(Function);
             if (fnNameSupport) {
                 expect(MyClass.name).to.be("MyClass");
@@ -28,7 +34,6 @@ describe("Class", function () {
         it("should return a function named 'AnonymousClass' in any case when not in dev mode", function () {
             if (fnNameSupport) {
                 expect(new Class("MyClass", {}).name).to.be("AnonymousClass");
-                expect(new Class("/path/to/some/file/MyClass.class.js", {}).name).to.be("AnonymousClass");
             }
         });
     });
@@ -125,6 +130,14 @@ describe("Class", function () {
 
             expect(myClass.foo).to.be("foo");
             expect(myClass.bar).to.be("bar");
+        });
+        it("should throw an exception when passing non-objects", function () {
+            expect(function () {
+                new Class(undefined);
+            }).to.throwException(/Cannot apply properties of undefined/);
+            expect(function () {
+                new Class(2);
+            }).to.throwException(/Cannot apply properties of 2/);
         });
     });
     describe("constructors", function () {
@@ -258,8 +271,5 @@ describe("Class", function () {
             expect(mySubClass instanceof MySuperClass).to.be(true);
             expect(MySubClass instanceof Function).to.be(true);
         });
-    });
-    describe("errors", function () {
-        //TODO add examples of wrong usage
     });
 });
