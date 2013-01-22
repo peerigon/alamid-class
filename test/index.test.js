@@ -132,11 +132,13 @@ describe("Class", function () {
             expect(myClass.bar).to.be("bar");
         });
         it("should throw an exception when passing non-objects", function () {
+            var instance;
+
             expect(function () {
-                new Class(undefined);
+                instance = new Class(undefined);
             }).to.throwException(/Cannot apply properties of undefined/);
             expect(function () {
-                new Class(2);
+                instance = new Class(2);
             }).to.throwException(/Cannot apply properties of 2/);
         });
     });
@@ -217,6 +219,17 @@ describe("Class", function () {
             expect(mySubClass.foo).to.be("FOO");
             expect(mySubClass.bar).to.be("bar");
             expect(mySubClass.moo("The cow says: ")).to.be("The cow says: MooMoo");
+        });
+        it("should return this when calling this._super() within a constructor", function () {
+            var MyClass = new Class({}),
+                MySubClass = MyClass.extend({
+                    constructor: function () {
+                        expect(this._super()).to.be(this);
+                    }
+                }),
+                mySubClass;
+
+            mySubClass = new MySubClass();
         });
         it("should not alter the length-attribute of overridden methods", function () {
             var MyClass = new Class({
