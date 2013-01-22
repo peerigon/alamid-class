@@ -39,24 +39,18 @@ describe("Class", function () {
     });
     describe("mixins", function () {
         it("should accept several objects as mixins", function () {
-            var MyClass = new Class({
+            var called = "",
+                MyClass = new Class({
                     foo: "foo",
-                    constructor: function () {
-                        this.constructorOrder = "1";
-                    },
                     getFoo: function () { return this.foo; }
                 }, {
                     bar: "bar",
-                    getBar: function () { return this.bar; },
-                    constructor: function () {
-                        this.constructorOrder += "2";
-                    }
+                    getBar: function () { return this.bar; }
                 }),
                 myClass = new MyClass();
 
             expect(myClass.foo).to.be("foo");
             expect(myClass.bar).to.be("bar");
-            expect(myClass.constructorOrder).to.be("12");
             expect(myClass.getFoo()).to.be("foo");
             expect(myClass.getBar()).to.be("bar");
         });
@@ -64,9 +58,7 @@ describe("Class", function () {
             var MyClass,
                 myClass;
 
-            function MyMixin() {
-                this.constructorOrder = "1";
-            }
+            function MyMixin() {}
             MyMixin.prototype.foo = "foo";
             MyMixin.prototype.getFoo = function () {
                 return this.foo;
@@ -74,62 +66,30 @@ describe("Class", function () {
             MyMixin.hello = "hello";
 
             MyClass = new Class(MyMixin, {
-                bar: "bar",
-                constructor: function () {
-                    this.constructorOrder += "2";
-                }
+                bar: "bar"
             });
             myClass = new MyClass();
 
             expect(myClass.foo).to.be("foo");
             expect(myClass.bar).to.be("bar");
-            expect(myClass.constructorOrder).to.be("12");
             expect(myClass.getFoo()).to.be("foo");
             expect(myClass.hello).to.be(undefined);
         });
         it("should accept other classes as mixin", function () {
-            var MySuperMixin = new Class({
-                    constructor: function () {
-                        this.constructorOrder += "2";
-                    },
+            var MyMixin = new Class({
+                    foo: "foo",
                     getFoo: function () {
                         return this.foo;
                     }
                 }),
-                MyMixin = MySuperMixin.extend({
-                    foo: "foo",
-                    constructor: function () {
-                        this.constructorOrder = "1";
-                    }
-                }),
                 MyClass = new Class(MyMixin, {
-                    bar: "bar",
-                    constructor: function () {
-                        this.constructorOrder += "3";
-                    }
+                    bar: "bar"
                 }),
                 myClass = new MyClass();
 
             expect(myClass.foo).to.be("foo");
             expect(myClass.bar).to.be("bar");
-            expect(myClass.constructorOrder).to.be("123");
             expect(myClass.getFoo()).to.be("foo");
-        });
-        it("should execute all constructors", function () {
-            var MyMixin = new Class({
-                    constructor: function () {
-                        this.foo = "foo";
-                    }
-                }),
-                MyClass = new Class(MyMixin, {
-                    constructor: function () {
-                        this.bar = "bar";
-                    }
-                }),
-                myClass = new MyClass();
-
-            expect(myClass.foo).to.be("foo");
-            expect(myClass.bar).to.be("bar");
         });
         it("should throw an exception when passing non-objects", function () {
             var instance;
@@ -160,6 +120,26 @@ describe("Class", function () {
                 });
 
             expect(MyClass.length).to.be(2);
+        });
+        it("should execute only the last specified constructor", function () {
+            var called = "",
+                MyMixin = new Class({
+                    constructor: function () {
+                        called += "1";
+                    }
+                }),
+                MyClass = new Class(MyMixin, {
+                    constructor: function () {
+                        called += "2";
+                    }
+                }, {
+                    constructor: function () {
+                        called += "3";
+                    }
+                }),
+                myClass = new MyClass();
+
+            expect(called).to.be("3");
         });
     });
     describe("inheritance", function () {
