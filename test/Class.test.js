@@ -108,21 +108,27 @@ describe("Class", function () {
                     foo: null,
                     constructor: function (foo) {
                         this.foo = foo;
+                        timesCalled++;
                     }
                 }),
+                timesCalled = 0,
                 myClass = new MyClass("foo");
 
             expect(myClass.foo).to.be("foo");
+            expect(timesCalled).to.be(1);
         });
         it("should not be a problem to have a constructor with several arguments", function () {
             var MyClass = new Class({
                     constructor: function (foo, bar, baz, a, b, c) {
                         this.args = [foo, bar, baz, a, b, c];
+                        timesCalled++;
                     }
                 }),
+                timesCalled = 0,
                 myClass = new MyClass("foo", "bar", "baz", "a", "b", "c");
 
             expect(myClass.args).to.eql(["foo", "bar", "baz", "a", "b", "c"]);
+            expect(timesCalled).to.be(1);
         });
         it("should return a function with the constructor's length attribute", function () {
             var MyClass = new Class({
@@ -166,23 +172,53 @@ describe("Class", function () {
             expect(mySubClass.bar).to.be(MySubClass.prototype.bar);
         });
         it("should call the super constructor automatically if it hasn't been called", function () {
-            var MyClass = new Class({
-                    foo: null,
+            var MySuperClass = new Class("MySuperClass", {
+                    constructor: function () {
+                        mySuperClassArgs = arguments;
+                        mySuperClassTimesCalled++;
+                    }
+                }),
+                mySuperClassArgs,
+                mySuperClassTimesCalled = 0,
+                MyClass = MySuperClass.extend("MyClass", {
                     constructor: function (foo) {
-                        expect(arguments.length).to.be(2);
-                        this.foo = foo;
+                        myClassArgs = arguments;
+                        myClassTimesCalled++;
                     }
                 }),
-                MySubClass = MyClass.extend({
-                    bar: null,
+                myClassArgs,
+                myClassTimesCalled = 0,
+                MySubClass = MyClass.extend("MySubClass", {
                     constructor: function (foo, bar) {
-                        this.bar = bar;
+                        mySubClassArgs = arguments;
+                        mySubClassTimesCalled++;
                     }
                 }),
+                mySubClassArgs,
+                mySubClassTimesCalled = 0,
                 mySubClass = new MySubClass("foo", "bar");
 
-            expect(mySubClass.foo).to.be("foo");
-            expect(mySubClass.bar).to.be("bar");
+            expect(mySubClassArgs).to.eql(["foo", "bar"]);
+            expect(mySubClassTimesCalled).to.be(1);
+            expect(myClassArgs).to.eql(["foo", "bar"]);
+            expect(myClassTimesCalled).to.be(1);
+            expect(mySuperClassArgs).to.eql(["foo", "bar"]);
+            expect(mySuperClassTimesCalled).to.be(1);
+        });
+        it("should call the super constructor automatically if the child class has no constructor", function () {
+            var MyClass = new Class({
+                    constructor: function () {
+                        myClassArgs = arguments;
+                        timesCalled++;
+                    }
+                }),
+                myClassArgs,
+                timesCalled = 0,
+                MySubClass = MyClass.extend({}),
+                mySubClass = new MySubClass("foo", "bar");
+
+            expect(myClassArgs).to.eql(["foo", "bar"]);
+            expect(timesCalled).to.be(1);
         });
         it("should be possible to call the overridden method via this._super()", function () {
             var MyClass = new Class({
