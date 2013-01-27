@@ -37,8 +37,8 @@ describe("Class", function () {
             }
         });
     });
-    describe("mixins", function () {
-        it("should accept several objects as mixins", function () {
+    describe("prototype", function () {
+        it("should accept several objects as prototypes", function () {
             var called = "",
                 MyClass = new Class({
                     foo: "foo",
@@ -54,7 +54,7 @@ describe("Class", function () {
             expect(myClass.getFoo()).to.be("foo");
             expect(myClass.getBar()).to.be("bar");
         });
-        it("should also accept functions as mixin", function () {
+        it("should also accept functions as prototypes", function () {
             var MyClass,
                 myClass;
 
@@ -75,7 +75,7 @@ describe("Class", function () {
             expect(myClass.getFoo()).to.be("foo");
             expect(myClass.hello).to.be(undefined);
         });
-        it("should accept other classes as mixin", function () {
+        it("should accept other classes as prototypes", function () {
             var MyMixin = new Class({
                     foo: "foo",
                     getFoo: function () {
@@ -113,6 +113,16 @@ describe("Class", function () {
                 myClass = new MyClass("foo");
 
             expect(myClass.foo).to.be("foo");
+        });
+        it("should not be a problem to have a constructor with several arguments", function () {
+            var MyClass = new Class({
+                    constructor: function (foo, bar, baz, a, b, c) {
+                        this.args = [foo, bar, baz, a, b, c];
+                    }
+                }),
+                myClass = new MyClass("foo", "bar", "baz", "a", "b", "c");
+
+            expect(myClass.args).to.eql(["foo", "bar", "baz", "a", "b", "c"]);
         });
         it("should return a function with the constructor's length attribute", function () {
             var MyClass = new Class({
@@ -263,6 +273,72 @@ describe("Class", function () {
             expect(mySubClass instanceof MyClass).to.be(true);
             expect(mySubClass instanceof MySuperClass).to.be(true);
             expect(MySubClass instanceof Function).to.be(true);
+        });
+    });
+    describe("mixins", function () {
+        it("should be possible to mixin a Class into an existing object", function () {
+            var MyClass = new Class({
+                    foo: function () {
+                        this.foo = "foo";
+                    }
+                }),
+                someObj = {
+                    getFoo: function () {
+                        return this.foo;
+                    }
+                };
+
+            MyClass.mixin(someObj);
+            expect(someObj.foo).to.be.a(Function);
+            someObj.foo();
+            expect(someObj.getFoo()).to.be("foo");
+        });
+        it("should overwrite existing keys", function () {
+            var MyClass = new Class({
+                    foo: "FOO"
+                }),
+                someObj = {
+                    foo: "foo"
+                };
+
+            MyClass.mixin(someObj);
+            expect(someObj.foo).to.be("FOO");
+        });
+        it("should be chainable", function () {
+            var MyClass = new Class({});
+
+            expect(MyClass.mixin({})).to.be(MyClass);
+        });
+        it("should augment the function object, not the function's prototype", function () {
+            var MyClass = new Class({
+                foo: "FOO"
+            });
+
+            function SomeFunc() {}
+
+            MyClass.mixin(SomeFunc);
+            expect(SomeFunc.foo).to.be("FOO");
+        });
+        it("should not call the constructor on the given object", function () {
+            var called = false,
+                MyClass = new Class({
+                    constructor: function () {
+                        called = true;
+                    }
+                });
+
+            MyClass.mixin({});
+            expect(called).to.be(false);
+        });
+        it("should also mixin all inherited properties", function () {
+            var MySuperClass = new Class({
+                    a: "a"
+                }),
+                MyClass = MySuperClass.extend({}),
+                someObj = {};
+
+            MyClass.mixin(someObj);
+            expect(someObj.a).to.be("a");
         });
     });
 });
