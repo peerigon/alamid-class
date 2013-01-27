@@ -210,6 +210,32 @@ describe("Class", function () {
             expect(mySubClass.bar).to.be("bar");
             expect(mySubClass.moo("The cow says: ")).to.be("The cow says: MooMoo");
         });
+        it("should execute the superior method of the mixin when the mixin calls this._super()", function () {
+            var superOfMixinCalled = false,
+                superCalled = false,
+                MySuperMixin = new Class({
+                    foo: function () {
+                        superOfMixinCalled = true;
+                    }
+                }),
+                MyMixin = MySuperMixin.extend({
+                    foo: function () {
+                        this._super();
+                    }
+                }),
+                MySuperClass = new Class({
+                    foo: function () {
+                        superCalled = true;
+                    }
+                }),
+                MyClass = MySuperClass.extend(MyMixin),
+                myClass = new MyClass();
+
+            myClass.foo();
+            
+            expect(superOfMixinCalled).to.be(true);
+            expect(superCalled).to.be(false);
+        });
         it("should return this when calling this._super() within a constructor", function () {
             var MyClass = new Class({}),
                 MySubClass = MyClass.extend({
