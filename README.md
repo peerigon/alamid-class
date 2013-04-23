@@ -173,16 +173,16 @@ Specifies the name of the returned function. Works only in dev-mode. Defaults to
 - *proto1, proto2, ...*: <br/>
 Multiple prototypes that will be merged into one prototype (while the latter prototype overrides the former). If the given prototype is typeof function, its prototype is used instead. So, passing `func` or `func.prototype` is the same.
 
+### class.extend(name?, proto1, proto2, ...): Class
+
+Creates a new function that will inherit from `class` and implement the given prototypes.
+
 ### class.mixin(obj): Class
 
 Copies all properties of `Class.prototype` to the given target. Returns `Class` for a chainable interface.
 
 - *obj*: <br/>
 The target object that receives all properties.
-
-### class.extend(name?, proto1, proto2, ...): Class
-
-Creates a new function that will inherit from `class` and implement the given prototypes. 
 
 ### Class.dev
 
