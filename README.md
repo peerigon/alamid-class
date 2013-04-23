@@ -19,7 +19,7 @@ Installation
 Quick Start
 --------
 
-### [Syntax](https://github.com/peerigon/alamid-class/examples/basic.js)
+### [Syntax](https://github.com/peerigon/alamid-class/blob/master/examples/basic.js)
 
 The syntax is easy to grasp and expressive. A simple class looks like this:
 
@@ -46,7 +46,7 @@ console.log(cat.name); // "Jimmy"
 console.log(cat.hasOwnProperty("meow")); // false because it is inherited by the prototype
 ```
 
-### [Inheritance](https://github.com/peerigon/alamid-class/examples/inheritance.js)
+### [Inheritance](https://github.com/peerigon/alamid-class/blob/master/examples/inheritance.js)
 
 Now you can extend that class with:
 
@@ -86,7 +86,7 @@ var MyEventEmitter = Class(EventEmitter).extend({
 });
 ```
 
-### [Mixins](https://github.com/peerigon/alamid-class/examples/mixins.js)
+### [Mixins](https://github.com/peerigon/alamid-class/blob/master/examples/mixins.js)
 
 Mixins are always part of a flexible and powerful class system. In alamid-class a mixin is just an object that is merged into the prototype.
 
@@ -138,7 +138,7 @@ someObj.seekParents(); // "No parents found. Jimmy is feeling sad now..."
 
 Please note, that you can't mix in a constructor. If your mixin has a constructor you need to invoke it manually on the object, like `Octocat.call(someObj);`
 
-### [Dev-mode]((https://github.com/peerigon/alamid-class/examples/dev-mode.js)
+### [Dev-mode]((https://github.com/peerigon/alamid-class/blob/master/examples/dev-mode.js)
 
 For a nicer debugging experience and better stack traces you can give your classes names. Take a look at the difference:
 
@@ -186,7 +186,7 @@ Creates a new function that will inherit from `class` and implement the given pr
 
 ### Class.dev
 
-Boolean variable that switches alamid-class to [dev-mode](https://github.com/peerigon/alamid-class/#Dev-mode). Defaults to false. Checkout the [example](https://github.com/peerigon/alamid-class/examples/dev-mode.js).
+Boolean variable that switches alamid-class to [dev-mode](https://github.com/peerigon/alamid-class/#Dev-mode). Defaults to false. Checkout the [example](https://github.com/peerigon/alamid-class/blob/master/examples/dev-mode.js).
 
 <br />
 
