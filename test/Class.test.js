@@ -241,21 +241,21 @@
             it("should be possible to call the overridden method via this._super()", function () {
                 var MyClass = new Class({
                         foo: null,
-                        constructor: function (foo) {
-                            this.foo = foo;
+                        constructor: function () {
+                            this.foo = arguments[0];
                         },
-                        moo: function (prefix) {
-                            return prefix + "Moo";
+                        moo: function () {
+                            return  arguments[0] + "Moo";
                         }
                     }),
                     MySubClass = MyClass.extend({
                         bar: null,
-                        constructor: function (foo, bar) {
-                            this.bar = bar;
-                            this._super(foo.toUpperCase());
+                        constructor: function () {
+                            this.bar =  arguments[1];
+                            this._super(arguments[0].toUpperCase());
                         },
-                        moo: function (prefix) {
-                            return this._super(prefix) + "Moo";
+                        moo: function () {
+                            return this._super(arguments[0]) + "Moo";
                         }
                     }),
                     mySubClass = new MySubClass("foo", "bar");
