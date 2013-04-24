@@ -2,7 +2,9 @@
 
 var Class = require("../");
 
-var Cat = new Class({
+console.log("\nbasics\n==================================================\n");
+
+var Cat = new Class("Cat", {
     name: "Jimmy",
     age: 3,
     constructor: function (name, age) {
@@ -15,8 +17,10 @@ var Cat = new Class({
 });
 
 var cat = new Cat();
+
 console.log(cat instanceof Cat); // true
 console.log(cat.name); // "Jimmy"
 console.log(cat.hasOwnProperty("strollAround")); // false, it is inherited from the prototype
+console.log(cat.Class === Cat); // true
 
 module.exports = Cat;

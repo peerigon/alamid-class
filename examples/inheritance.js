@@ -3,6 +3,8 @@
 var Class = require("../");
 var Cat = require("./basic.js");
 
+console.log("\ninheritance\n==================================================\n");
+
 var Octocat = Cat.extend("Octocat", {
     mood: "sad",
     constructor: function () {
@@ -15,11 +17,14 @@ var Octocat = Cat.extend("Octocat", {
 });
 
 var octocat = new Octocat();
+
 console.log(octocat instanceof Cat); // true
 console.log(octocat.name); // "Octocat"
 console.log(octocat.mood); // "sad"
 octocat.strollAround(); // "Seeking parents ... but in the meantime:
                         // MEEEOOOWWW!!! Need food! Now!"
+
+console.log(octocat.Class === Octocat); // true
 
 
 

@@ -4,6 +4,8 @@ var Class = require("../");
 var Cat = require("./basic.js");
 var EventEmitter = require("events").EventEmitter;
 
+console.log("\nmixins\n==================================================\n");
+
 var Orphan = {
     seekParents: function () {
         console.log("No parents found. " + this.name + " is feeling " + this.mood + " now...");

@@ -1,6 +1,6 @@
 alamid-class
 =====
-**Prototypal inheritance in JavaScript without syntactic noise**.
+**Easy prototypal inheritance in JavaScript**.
 
 alamid-class is a lightweight library (~1.2 kb compressed and gzipped) that allows you to write classes in JavaScript intuitively. It embraces the dynamic and prototypal nature of JavaScript instead of pretending to be a compiled language like Java.
 
@@ -84,6 +84,13 @@ var MyEventEmitter = Class(EventEmitter).extend({
         return this._super.apply(this, arguments);
     }
 });
+```
+
+Additionally all instances provide a [read-only reference](https://github.com/peerigon/alamid-class#Read-only property) called `Class` on the function that created the instance:
+
+```javascript
+console.log(cat.Class); // Cat
+console.log(octocat.Class); // Octocat
 ```
 
 ### [Mixins](https://github.com/peerigon/alamid-class/blob/master/examples/mixins.js)
@@ -220,6 +227,20 @@ var a = new MyClass();
 var b = new MyClass();
 console.log(a.myObj === b.myObj); // false
 ```
+
+### Read-only property `Class`
+Every instance provides a read-only reference called `Class` to the function that created the instance. Some could argue that alamid-class should use the built-in `constructor`-property for that. The problem is, that `constructor` always points to the topmost function in the prototype-chain:
+
+```javascript
+function A() {}
+function B() {}
+B.prototype = Object.create(A.prototype);
+
+console.log(new B().constructor === A); // true
+console.log(new B().constructor === B); // false
+```
+
+That's the reason why alamid-class introduces a new read-only reference to the function that has been called by `new`.
 
 ### How does this._super work?
 

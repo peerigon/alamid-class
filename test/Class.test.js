@@ -99,6 +99,17 @@
                     instance = new Class(2);
                 }).to.throwException(/Cannot apply properties of 2/);
             });
+            it("should have a read-only reference called 'Class' to the Class-function", function () {
+                var MyClass = new Class({}),
+                    myClass = new MyClass();
+
+                expect(myClass.Class).to.be(MyClass);
+                MyClass = new Class({
+                    Class: "some other value"
+                });
+                myClass = new MyClass();
+                expect(myClass.Class).to.be(MyClass);
+            });
         });
         describe("constructors", function () {
             it("should be possible to define a constructor", function () {
@@ -154,6 +165,15 @@
                     myClass = new MyClass();
 
                 expect(called).to.be("3");
+            });
+            it("should expose the constructor function", function () {
+                var MyClass = new Class({
+                        constructor: constructor
+                    });
+
+                function constructor() {}
+
+                expect(new MyClass().constructor).to.be(constructor);
             });
         });
         describe("inheritance", function () {
@@ -326,6 +346,31 @@
                 expect(mySubClass instanceof MyClass).to.be(true);
                 expect(mySubClass instanceof MySuperClass).to.be(true);
                 expect(MySubClass instanceof Function).to.be(true);
+            });
+            it("should be possible to replace a super method on runtime", function (done) {
+                var MyClass = new Class({
+                        test: function () {
+                            throw new Error("Oh snap! This function should not be called!");
+                        }
+                    }),
+                    MySubClass = MyClass.extend({
+                        test: function () {
+                            this._super();
+                        }
+                    }),
+                    mySubClass = new MySubClass();
+
+                MyClass.prototype.test = done;
+                mySubClass.test();
+            });
+            it("should apply the ChildClass as read-only 'Child'-reference", function () {
+                var MyClass = new Class({}),
+                    MySubClass = MyClass.extend({
+                        Class: "some other value"
+                    }),
+                    mySubClass = new MySubClass();
+
+                expect(mySubClass.Class).to.be(MySubClass);
             });
         });
         describe("mixins", function () {
