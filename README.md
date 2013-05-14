@@ -186,7 +186,7 @@ Creates a new function that will inherit from `class` and implement the given pr
 
 ### class.mixin(obj): Class
 
-Copies all properties of `class.prototype` to the given target. Returns `Class` for a chainable interface.
+Copies all properties of `class.prototype` to the given target. Returns `class`.
 
 - *obj*: <br/>
 The target object that receives all properties.
