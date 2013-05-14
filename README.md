@@ -43,7 +43,7 @@ var Cat = new Class({
 var cat = new Cat();
 console.log(cat instanceof Cat); // true
 console.log(cat.name); // "Jimmy"
-console.log(cat.hasOwnProperty("meow")); // false because it is inherited by the prototype
+console.log(cat.hasOwnProperty("strollAround")); // false because it is inherited by the prototype
 ```
 
 ### [Inheritance](https://github.com/peerigon/alamid-class/blob/master/examples/inheritance.js)
