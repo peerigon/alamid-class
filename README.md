@@ -7,6 +7,8 @@ alamid-class is a lightweight library (~1.2 kb compressed and gzipped) that allo
 [![Build Status](https://secure.travis-ci.org/peerigon/alamid-class.png?branch=master)](https://travis-ci.org/peerigon/alamid-class)
 [![Dependency Status](https://david-dm.org/peerigon/alamid-class/status.png)](https://david-dm.org/peerigon/alamid-class)
 
+This library is not intended to obscure prototypal inheritance. There are [some caveats](https://github.com/peerigon/alamid-class#Notes) you should know about if you're new to it.
+
 <br />
 
 Installation
@@ -228,6 +230,37 @@ var b = new MyClass();
 console.log(a.myObj === b.myObj); // false
 ```
 
+### How does this._super work?
+
+While this is basically accomplished with [John Resig's trick](http://ejohn.org/blog/simple-javascript-inheritance/), it has been tweaked so the function's `length`-attribute isn't modified.
+
+### Asynchronous calls of this._super
+
+There is one problem with Resig's technique: If the call on this._super() is asynchronous, this._super may point to another function. So, instead of this:
+
+```javascript
+    somethingAsync: function () {
+        var self = this;
+
+        setTimeout(function () {
+            self._super(); // this might point to another function than the overridden
+        }, 0);
+    }
+```
+
+you should do: 
+
+```javascript
+    somethingAsync: function () {
+        var self = this,
+            super = this._super;
+
+        setTimeout(function () {
+            super.call(self);
+        }, 0);
+    }
+```
+
 ### Read-only property `Class`
 Every instance provides a read-only reference called `Class` to the function that created the instance. Some could argue that alamid-class should use the built-in `constructor`-property for that. The problem is, that `constructor` always points to the topmost function in the prototype-chain:
 
@@ -241,10 +274,6 @@ console.log(new B().constructor === B); // false
 ```
 
 That's the reason why alamid-class introduces a new read-only reference to the function that has been called by `new`.
-
-### How does this._super work?
-
-While this is basically accomplished with [John Resig's trick](http://ejohn.org/blog/simple-javascript-inheritance/), it has been tweaked so the function's `length`-attribute isn't modified.
 
 ### About alamid
 
