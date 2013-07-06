@@ -10,15 +10,15 @@
     }
 
     describe("Class", function () {
-        describe("class names", function () {
-            it("should return a function named 'AnonymousClass' when passing no class name", function () {
+        describe("name", function () {
+            it("should be 'AnonymousClass' when passing no class name", function () {
                 var MyClass = new Class();
                 expect(MyClass).to.be.a(Function);
                 if (fnNameSupport) {
                     expect(MyClass.name).to.be("AnonymousClass");
                 }
             });
-            it("should return a function named 'MyClass' when passing 'MyClass' as class name (in dev mode)", function () {
+            it("should be 'MyClass' if specified (in dev mode)", function () {
                 var MyClass;
 
                 Class.dev = true;
@@ -29,7 +29,7 @@
                 }
                 Class.dev = false;
             });
-            it("should return a function named 'AnonymousClass' in any case when not in dev mode", function () {
+            it("always be 'AnonymousClass' when not in dev mode", function () {
                 if (fnNameSupport) {
                     expect(new Class("MyClass", {}).name).to.be("AnonymousClass");
                 }
@@ -289,6 +289,22 @@
 
                 expect(superOfMixinCalled).to.be(true);
                 expect(superCalled).to.be(false);
+            });
+            it("should be possible to exchange the overridden method on runtime", function () {
+                var MyClass = new Class({
+                        foo: function () {
+                            throw new Error("This function should not be called");
+                        }
+                    }),
+                    MySubClass = MyClass.extend({
+                        foo: function () {
+                            this._super();
+                        }
+                    }),
+                    mySubClass = new MySubClass();
+
+                MyClass.prototype.foo = function () {};
+                mySubClass.foo();
             });
             it("should return this when calling this._super() within a constructor", function () {
                 var MyClass = new Class({}),
