@@ -468,6 +468,61 @@
                 expect(someObj.b).to.be("b");
             });
         });
+        describe("plugins", function () {
+            it("should be possible to add plugins to classes via the .use()-method", function () {
+                var MyClass = new Class({}),
+                    pluginCalled = 0;
+                
+                MyClass.use(function plugin(Class) {
+                    pluginCalled++;
+                    expect(Class).to.be(MyClass);
+                });
+                expect(pluginCalled).to.be(1);
+            });
+            it("should be possible to override every method of that class", function () {
+                var myClassConstructorCalled = 0,
+                    pluginConstructorCalled = 0,
+                    myClassMethodCalled = 0,
+                    pluginMethodCalled = 0,
+                    MyClass = new Class({
+                        constructor: function () {
+                            myClassConstructorCalled++;
+                        },
+                        method: function () {
+                            myClassMethodCalled++;
+                        }
+                    }),
+                    myClass;
+
+                MyClass.use(function plugin(Class) {
+                    var constructor = MyClass.prototype.constructor,
+                        method = MyClass.prototype.method;
+
+                    Class.prototype.constructor = function () {
+                        pluginConstructorCalled++;
+                        constructor.call(this);
+                    };
+                    Class.prototype.method = function () {
+                        pluginMethodCalled++;
+                        method.call(this);
+                    };
+                });
+                myClass = new MyClass();
+                myClass.method();
+
+                expect(myClassConstructorCalled).to.be(1);
+                expect(pluginConstructorCalled).to.be(1);
+                expect(myClassMethodCalled).to.be(1);
+                expect(pluginMethodCalled).to.be(1);
+            });
+            it("should be chainable", function () {
+                var MyClass = new Class({});
+
+                function plugin() {}
+
+                expect(MyClass.use(plugin)).to.be(MyClass);
+            });
+        });
     });
 })(
     typeof window === "object"? expect : require("expect.js"),
