@@ -3,12 +3,6 @@
 
     var fnNameSupport = typeof Function.prototype.name === "string";
 
-    function checkFor(Error) {
-        return function (e) {
-            expect(e).to.be.an(Error);
-        };
-    }
-
     describe("Class", function () {
         describe("name", function () {
             it("should be 'AnonymousClass' when passing no class name", function () {
