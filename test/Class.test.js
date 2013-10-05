@@ -465,12 +465,14 @@
         describe("plugins", function () {
             it("should be possible to add plugins to classes via the .use()-method", function () {
                 var MyClass = new Class({}),
+                    pluginConfig = {},
                     pluginCalled = 0;
                 
-                MyClass.use(function plugin(Class) {
+                MyClass.use(function plugin(Class, config) {
                     pluginCalled++;
                     expect(Class).to.be(MyClass);
-                });
+                    expect(pluginConfig).to.before(config);
+                }, pluginConfig);
                 expect(pluginCalled).to.be(1);
             });
             it("should be possible to override every method of that class", function () {
