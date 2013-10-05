@@ -471,7 +471,7 @@
                 MyClass.use(function plugin(Class, config) {
                     pluginCalled++;
                     expect(Class).to.be(MyClass);
-                    expect(pluginConfig).to.before(config);
+                    expect(pluginConfig).to.be(config);
                 }, pluginConfig);
                 expect(pluginCalled).to.be(1);
             });
