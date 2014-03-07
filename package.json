@@ -4,7 +4,8 @@
   "description": "Easy prototypal inheritance in JavaScript",
   "main": "./lib/Class.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha -R spec"
+    "test": "node node_modules/mocha/bin/mocha test/main.js -R spec",
+    "test-browser": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js mocha\\!./test/main.js -d"
   },
   "keywords": [
     "class",
@@ -20,7 +21,11 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "1.x",
-    "expect.js": "0.x"
+    "chai": "1.x",
+    "sinon": "1.7.x",
+    "sinon-chai": "2.x",
+    "webpack-dev-server": "1.x",
+    "mocha-loader": "0.x"
   },
   "repository": {
     "type": "git",
