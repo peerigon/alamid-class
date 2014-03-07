@@ -1,7 +1,7 @@
 {
   "name": "alamid-class",
   "version": "0.4.2",
-  "description": "Easy prototypal inheritance in JavaScript",
+  "description": "Easy prototype inheritance",
   "main": "./lib/Class.js",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha test/main.js -R spec",
@@ -30,6 +30,20 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/peerigon/alamid-class.git"
+  },
+  "testling": {
+    "harness" : "mocha",
+    "files": "test/main.js",
+    "browsers": [
+      "ie/7..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/7",
+      "ipad/7",
+      "android-browser/latest"
+    ]
   },
   "author": "peerigon <developers@peerigon.com>",
   "license": "MIT"
