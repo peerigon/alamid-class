@@ -147,7 +147,7 @@ someObj.seekParents(); // "No parents found. Jimmy is feeling sad now..."
 
 Please note, that you can't mix in a constructor. If your mixin has a constructor you need to invoke it manually on the object, like `Octocat.call(someObj);`
 
-### [Dev-mode]((https://github.com/peerigon/alamid-class/blob/master/examples/dev-mode.js)
+### [Dev-mode](https://github.com/peerigon/alamid-class/blob/master/examples/dev-mode.js)
 
 For a nicer debugging experience and better stack traces you can give your classes names. Take a look at the difference:
 
