@@ -1,6 +1,6 @@
 alamid-class
 =====
-**Easy prototypal inheritance in JavaScript**.
+**Easy prototype inheritance**.
 
 alamid-class is a lightweight library (~1.2 kb compressed and gzipped) that allows you to write classes in JavaScript intuitively. It embraces the dynamic and prototypal nature of JavaScript instead of pretending to be a compiled language like Java.
 
