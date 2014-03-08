@@ -4,17 +4,21 @@ alamid-class
 
 alamid-class is a lightweight library (~1.2 kb compressed and gzipped) that allows you to write classes in JavaScript intuitively. It embraces the dynamic and prototypal nature of JavaScript instead of pretending to be a compiled language like Java.
 
-[![Build Status](https://secure.travis-ci.org/peerigon/alamid-class.png?branch=master)](https://travis-ci.org/peerigon/alamid-class)
-[![Dependency Status](https://david-dm.org/peerigon/alamid-class/status.png)](https://david-dm.org/peerigon/alamid-class)
-
 This library is not intended to obscure prototypal inheritance. There are [some caveats](https://github.com/peerigon/alamid-class#Notes) you should know about if you're new to it.
 
 <br />
 
-Installation
-------------
+Setup
+------------------------------------------------------------------------
 
-`npm install alamid-class`
+[![npm status](https://nodei.co/npm/alamid-class.png?downloads=true&stars=true)](https://npmjs.org/packagealamid-class)
+
+[![build status](https://travis-ci.org/peerigon/alamid-class.png)](http://travis-ci.org/peerigon/alamid-class)
+[![dependencies](https://david-dm.org/peerigon/alamid-class.png)](http://david-dm.org/peerigon/alamid-class)
+[![devDependencies](https://david-dm.org/peerigon/alamid-class/dev-status.png)](http://david-dm.org/peerigon/alamid-class#info=devDependencies)
+
+[![browser support](https://ci.testling.com/peerigon/alamid-class.png)
+](https://ci.testling.com/peerigon/alamid-class)
 
 <br />
 
