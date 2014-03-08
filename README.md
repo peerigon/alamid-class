@@ -25,7 +25,7 @@ Setup
 Quick Start
 --------
 
-### [Syntax](https://github.com/peerigon/alamid-class/blob/master/examples/basic.js)
+### [Syntax](https://github.com/peerigon/alamid-class/blob/master/example/basic.js)
 
 The syntax is easy to grasp and expressive. A simple class looks like this:
 
@@ -52,7 +52,7 @@ console.log(cat.name); // "Jimmy"
 console.log(cat.hasOwnProperty("strollAround")); // false because it is inherited by the prototype
 ```
 
-### [Inheritance](https://github.com/peerigon/alamid-class/blob/master/examples/inheritance.js)
+### [Inheritance](https://github.com/peerigon/alamid-class/blob/master/example/inheritance.js)
 
 Now you can extend that class with:
 
@@ -99,7 +99,7 @@ console.log(cat.Class); // Cat
 console.log(octocat.Class); // Octocat
 ```
 
-### [Mixins](https://github.com/peerigon/alamid-class/blob/master/examples/mixins.js)
+### [Mixins](https://github.com/peerigon/alamid-class/blob/master/example/mixins.js)
 
 Mixins are always part of a flexible and powerful class system. In alamid-class a mixin is just an object that is merged into the prototype.
 
@@ -151,11 +151,11 @@ someObj.seekParents(); // "No parents found. Jimmy is feeling sad now..."
 
 Please note, that you can't mix in a constructor. If your mixin has a constructor you need to invoke it manually on the object, like `Octocat.call(someObj);`
 
-### [Dev-mode](https://github.com/peerigon/alamid-class/blob/master/examples/dev-mode.js)
+### [Dev-mode](https://github.com/peerigon/alamid-class/blob/master/example/dev-mode.js)
 
 For a nicer debugging experience and better stack traces you can give your classes names. Take a look at the difference:
 
-![Dev-mode](https://github.com/peerigon/alamid-class/raw/master/examples/dev-mode.png)
+![Dev-mode](https://github.com/peerigon/alamid-class/raw/master/example/dev-mode.png)
 
 But in order to set the function's name alamid-class needs to use eval(). Since eval() is slow and you usually don't need class names in production, this feature is only available when `Class.dev = true`. In production mode, names are simply ignored.
 
@@ -199,7 +199,7 @@ The target object that receives all properties.
 
 ### Class.dev
 
-Boolean variable that switches alamid-class to [dev-mode](https://github.com/peerigon/alamid-class/#Dev-mode). Defaults to false. Checkout the [example](https://github.com/peerigon/alamid-class/blob/master/examples/dev-mode.js).
+Boolean variable that switches alamid-class to [dev-mode](https://github.com/peerigon/alamid-class/#Dev-mode). Defaults to false. Checkout the [example](https://github.com/peerigon/alamid-class/blob/master/example/dev-mode.js).
 
 <br />
 
