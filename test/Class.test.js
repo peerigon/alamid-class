@@ -189,6 +189,19 @@ describe("Class", function () {
             expect(constructor3).to.have.been.called.once;
         });
 
+        it("should be possible to apply the class's constructor on a different context", function () {
+            var obj = {};
+
+            MyClass = new Class({
+                constructor: function () {
+                    this.foo = "foo";
+                }
+            });
+
+            MyClass.apply(obj);
+            expect(obj).to.have.property("foo", "foo");
+        });
+
         tests.run("constructor", new Class({}));
 
     });

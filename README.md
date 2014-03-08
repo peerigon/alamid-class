@@ -101,7 +101,7 @@ console.log(octocat.Class); // Octocat
 
 ### [Mixins](https://github.com/peerigon/alamid-class/blob/master/example/mixins.js)
 
-Mixins are always part of a flexible and powerful class system. In alamid-class a mixin is just an object that is merged into the prototype.
+Mixins are always part of a flexible class system. In alamid-class a mixin can be any object which will be merged into the prototype.
 
 ```javascript
 var Orphan = {
@@ -123,33 +123,36 @@ var octocat = new Octocat();
 octocat.seekParents(); // "No parents found. Octocat is feeling sad now..."
 ```
 
-If two mixins define a property with the same name, the latter mixin will simply override the former. This especially applies to the `constructor`. Keep in mind that in this case you need to invoke the overridden method manually.
-
-Furthermore every function can also be a mixin again:
+This way you can easy leverage multiple inheritance:
 
 ```javascript
-var Octocat = Cat.extend(EventEmitter, Orphan, {
+var Orphan = new Class({});
+var Octocat = Cat.extend(Orphan, EventEmitter, {
     mood: "sad",
     constructor: function () {
         this._super("Octocat", 5);
+        // Be sure to apply the mixin's constructors with the correct arguments manually
+        Orphan.call(this);
+        EventEmitter.call(this);
     }
 });
 
 var octocat = new Octocat();
-octocat.emit("seekingParents");
+octocat.emit("seeking parents");
+octocat.seekParents(); // "No parents found. Octocat is feeling sad now..."
 ```
 
-Passing `EventEmitter` for instance is just a shortcut for passing `EventEmitter.prototype`.
+If two mixins define a property with the same name, the latter mixin will simply override the former. This especially applies to the `constructor`, so be sure to call it manually.
 
 A class itself can also augment existing objects:
 
 ```javascript
 var someObj = {};
 Octocat.mixin(someObj);
+Octocat.call(someObj); // Applying the constructor manually
+
 someObj.seekParents(); // "No parents found. Jimmy is feeling sad now..."
 ```
-
-Please note, that you can't mix in a constructor. If your mixin has a constructor you need to invoke it manually on the object, like `Octocat.call(someObj);`
 
 ### [Dev-mode](https://github.com/peerigon/alamid-class/blob/master/example/dev-mode.js)
 
@@ -290,7 +293,7 @@ Contributing
 
 Suggestions and bug-fixes are always appreciated. Don't hesitate to create an issue or pull-request. All contributed code should pass
 1. the tests in node.js by running `npm test`
-2. the tests in all major browsers by running `npm run-script test-browser` and then visting `http://localhost:8080/bundle`
+2. the tests in all major browsers by running `npm run test-browser` and then visting `http://localhost:8080/bundle`
 
 <br />
 

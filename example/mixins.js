@@ -39,5 +39,7 @@ var someObj = {};
 Octocat.mixin(someObj);
 someObj.seekParents(); // "No parents found. Jimmy is feeling sad now..."
 
+// The constructor of Octocat hasn't been called, the name is still Jimmy inherited from the Cat-class.
+// We need to apply the constructor manually.
 Octocat.call(someObj);
 someObj.seekParents(); // "No parents found. Octocat is feeling sad now..."
