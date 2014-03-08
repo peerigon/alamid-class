@@ -40,6 +40,7 @@ describe("Class", function () {
             expect(new Class("MyClass", {}).name).to.equal("AnonymousClass");
         });
     });
+
     describe("prototype", function () {
         var MyClass,
             myClass;
