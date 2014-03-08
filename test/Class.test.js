@@ -3,22 +3,29 @@ var chai = require("chai"),
     expect = chai.expect,
     Class = require("../lib/Class.js");
 
+var fnNameSupport = ("name" in Function.prototype);
+
 chai.Assertion.includeStack = true;
 chai.use(require("sinon-chai"));
 
 describe("Class", function () {
 
     describe("name", function () {
-        var MyClass;
+        var _it = it,
+            MyClass;
 
-        it("should be 'AnonymousClass' when passing no class name", function () {
+        if (!fnNameSupport) {
+            _it = it.skip;
+        }
+
+        _it("should be 'AnonymousClass' when passing no class name", function () {
             MyClass = new Class();
 
             expect(MyClass).to.be.a("function");
             expect(MyClass.name).to.equal("AnonymousClass");
         });
 
-        it("should be 'MyClass' if specified (in dev mode)", function () {
+        _it("should be 'MyClass' if specified (in dev mode)", function () {
             Class.dev = true;
 
             MyClass = new Class("MyClass");
@@ -29,10 +36,9 @@ describe("Class", function () {
             Class.dev = false;
         });
 
-        it("should always be 'AnonymousClass' when not in dev mode", function () {
+        _it("should always be 'AnonymousClass' when not in dev mode", function () {
             expect(new Class("MyClass", {}).name).to.equal("AnonymousClass");
         });
-
     });
     describe("prototype", function () {
         var MyClass,
