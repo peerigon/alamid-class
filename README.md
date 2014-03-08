@@ -297,4 +297,4 @@ Suggestions and bug-fixes are always appreciated. Don't hesitate to create an is
 License
 -------
 
-MIT
+[Unlicense](http://unlicense.org/)
