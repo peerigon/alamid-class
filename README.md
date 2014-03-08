@@ -285,6 +285,15 @@ alamid-class has been extracted as standalone library from the application frame
 
 <br />
 
+Contributing
+------------
+
+Suggestions and bug-fixes are always appreciated. Don't hesitate to create an issue or pull-request. All contributed code should pass
+1. the tests in node.js by running `npm test`
+2. the tests in all major browsers by running `npm run-script test-browser` and then visting `http://localhost:8080/bundle`
+
+<br />
+
 License
 -------
 
