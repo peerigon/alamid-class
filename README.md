@@ -11,7 +11,7 @@ This library is not intended to obscure prototypal inheritance. There are [some 
 Setup
 ------------------------------------------------------------------------
 
-[![npm status](https://nodei.co/npm/alamid-class.png?downloads=true&stars=true)](https://npmjs.org/packagealamid-class)
+[![npm status](https://nodei.co/npm/alamid-class.png?downloads=true&stars=true)](https://npmjs.org/package/alamid-class)
 
 [![build status](https://travis-ci.org/peerigon/alamid-class.png)](http://travis-ci.org/peerigon/alamid-class)
 [![dependencies](https://david-dm.org/peerigon/alamid-class.png)](http://david-dm.org/peerigon/alamid-class)
