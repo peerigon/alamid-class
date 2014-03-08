@@ -1,7 +1,8 @@
 var chai = require("chai"),
     sinon = require("sinon"),
     expect = chai.expect,
-    Class = require("../lib/Class.js");
+    Class = require("../lib/Class.js"),
+    tests = require("alamid-interface-tests");
 
 var fnNameSupport = ("name" in Function.prototype);
 
@@ -188,13 +189,7 @@ describe("Class", function () {
             expect(constructor3).to.have.been.called.once;
         });
 
-        it("should expose a override-able constructor function", function () {
-            MyClass = new Class({
-                constructor: constructor
-            });
-
-            expect(MyClass.prototype).to.have.ownProperty("constructor");
-        });
+        tests.run("constructor", new Class({}));
 
     });
 
@@ -506,17 +501,7 @@ describe("Class", function () {
             mySubClass,
             plugin;
 
-        it("should be possible to add plugins to classes via the .use()-method", function () {
-            var pluginConfig = {};
-
-            MyClass = new Class({});
-            plugin = sinon.spy();
-
-            MyClass.use(plugin, pluginConfig);
-
-            expect(plugin).to.have.been.called.once;
-            expect(plugin).to.have.been.calledWith(MyClass, pluginConfig);
-        });
+        tests.run("use", new Class({}));
 
         it("should be possible to override every method of that class", function () {
             var myClassConstructorCalled = 0,
